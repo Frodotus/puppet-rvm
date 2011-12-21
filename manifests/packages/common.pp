@@ -3,19 +3,10 @@ class rvm::packages::common {
     path => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/rvm/bin',
   }
   
-  exec { 'download-rvm-install':
-    command => 'wget -O /tmp/rvm https://rvm.beginrescueend.com/install/rvm',
-    creates => '/tmp/rvm',
-    require => Package['curl'],
-    unless  => 'which rvm',
-  }
   exec { 'install-rvm':
-    command => "bash /tmp/rvm",
+    command => "bash -c '/usr/bin/curl -s https://rvm.beginrescueend.com/install/rvm -o /tmp/rvm-installer ; chmod +x /tmp/rvm-installer ; /tmp/rvm-installer --version latest'",
     creates => '/usr/local/rvm/bin/rvm',
-    require => Exec['download-rvm-install'],
-  }
-  file { '/tmp/rvm':
-    ensure  => absent,
-    require => Exec['install-rvm'],
+    unless  => 'which rvm',
+    require => Package['curl']
   }
 }
