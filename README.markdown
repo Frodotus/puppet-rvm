@@ -21,10 +21,19 @@ _Puppet Labs Standard Library_
   }
 </pre>
 
+*Add a gemset*
+<pre>
+rvm::define::gemset { 'example':
+  ensure       => 'present',
+  ruby_version => 'ree-1.8.7'
+}
+</pre>
+
 *Install a gem to a specific Ruby*
 <pre>
   rvm::define::gem { 'puppet':
     ensure       => 'present',
+    gemset       => 'example',
     ruby_version => 'ree-1.8.7',
     gem_version  => '2.7.1',
   }
