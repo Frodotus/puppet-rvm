@@ -6,6 +6,7 @@ class rvm::packages::common {
   exec { 'download-rvm-install':
     command => 'wget -O /tmp/rvm https://rvm.beginrescueend.com/install/rvm',
     creates => '/tmp/rvm',
+    require => Package['curl'],
     unless  => 'which rvm',
   }
   exec { 'install-rvm':
