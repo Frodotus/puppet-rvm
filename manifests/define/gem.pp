@@ -14,8 +14,9 @@ define rvm::define::gem(
   $rvm_ruby = "${rvm_path}/rubies"
   
   if $gemset == '' {
-        
+    $rvm_depency = "install-ruby-${ruby_version}"        
   } else {
+    $rvm_depency = "rvm-gemset-create-${gemset}-${ruby_version}"        
     $rubyset_version = "${ruby_version}@${gemset}"
   }
   # Setup proper install/uninstall commands based on gem version.
@@ -39,13 +40,13 @@ define rvm::define::gem(
     exec { "rvm-gem-install-${name}-${ruby_version}":
       command => $gem['install'],
       unless  => $gem['lookup'],
-      require => [Class['rvm'], Exec["rvm-gemset-create-${gemset}-${ruby_version}"]],
+      require => [Class['rvm'], Exec[$rvm_depency]],
     }
   } elsif $ensure == 'absent' {
     exec { "rvm-gem-uninstall-${name}-${version}":
       command => $gem['uninstall'],
       onlyif  => $gem['lookup'],
-      require => [Class['rvm'], Exec["rvm-gemset-create-${gemset}-${ruby_version}"]],
+      require => [Class['rvm'], Exec[$rvm_depency]],
     }    
   }
 }
