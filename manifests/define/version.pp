@@ -18,6 +18,7 @@ define rvm::define::version (
       command => "rvm install ${name}",
       creates => "${rvm_ruby}/${name}",
       require => Class['rvm'],
+      timeout => 0
     }  
   } elsif $ensure == 'absent' {
     exec { "uninstall-ruby-${name}":
